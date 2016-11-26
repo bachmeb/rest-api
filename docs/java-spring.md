@@ -498,3 +498,18 @@ drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 ..
 ```
 ./gradlew run
 ```
+```c
+/*
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:run
+Hello World!
+
+BUILD SUCCESSFUL
+
+Total time: 9.927 secs
+
+This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html
+*/
+```
