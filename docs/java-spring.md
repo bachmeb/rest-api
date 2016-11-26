@@ -1,12 +1,12 @@
 # java - spring
 
-### Build a VM and connect
+##### Build a VM and connect
 * https://github.com/bachmeb/spring-gs/blob/master/docs/aws-vm.md
 
-### Install Java Open JDK 1.8
+##### Install Java Open JDK 1.8
 * https://github.com/bachmeb/spring-gs/blob/master/docs/jdk-1.8-install.md
 
-### Install Gradle
+##### Install Gradle
 * https://github.com/bachmeb/spring-gs/blob/master/docs/gradle-install.md
 
 ##### Create a project directory
