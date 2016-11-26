@@ -128,11 +128,6 @@ BUILD SUCCESSFUL
 Total time: 5.173 secs
 ```
 
-##### Run the wrapper script to perform the build task
-```
-./gradlew build
-```
-
 ##### Edit build.gradle
 ```
 vim build.gradle
