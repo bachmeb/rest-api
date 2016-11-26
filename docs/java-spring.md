@@ -333,16 +333,165 @@ This build could be faster, please consider using the Gradle Daemon: https://doc
 */
 ```
 
-##### List the contents of the build/libs directory
+##### List the contents of the project directory
 ```
-ll build/libs/
+ls -lahR
 ```
 ```c
 /*
-total 13092
--rw-rw-r-- 1 bachmeb bachmeb 13394696 Nov 26 17:49 gs-rest-service-0.1.0.jar
--rw-rw-r-- 1 bachmeb bachmeb     1221 Nov 26 17:49 gs-rest-service-0.1.0.jar.original
--rw-rw-r-- 1 bachmeb bachmeb     1221 Nov 26 17:30 project.jar
+.:
+total 40K
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 ..
+drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 build
+-rw-rw-r-- 1 bachmeb bachmeb  662 Nov 26 17:49 build.gradle
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:34 gradle
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 .gradle
+-rwxrwxr-x 1 bachmeb bachmeb 4.9K Nov 26 17:34 gradlew
+-rw-rw-r-- 1 bachmeb bachmeb 2.4K Nov 26 17:34 gradlew.bat
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 src
+
+./build:
+total 32K
+drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 .
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 classes
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 dependency-cache
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:42 distributions
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 libs
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:42 scripts
+drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 17:30 tmp
+
+./build/classes:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 .
+drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 main
+
+./build/classes/main:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 ..
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 hello
+
+./build/classes/main/hello:
+total 16K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 ..
+-rw-rw-r-- 1 bachmeb bachmeb  369 Nov 26 17:49 Greeter.class
+-rw-rw-r-- 1 bachmeb bachmeb  648 Nov 26 17:49 HelloWorld.class
+
+./build/dependency-cache:
+total 8.0K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 .
+drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
+
+./build/distributions:
+total 25M
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:42 .
+drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
+-rw-rw-r-- 1 bachmeb bachmeb  13M Nov 26 17:49 project.tar
+-rw-rw-r-- 1 bachmeb bachmeb  12M Nov 26 17:49 project.zip
+
+./build/libs:
+total 13M
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 .
+drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
+-rw-rw-r-- 1 bachmeb bachmeb  13M Nov 26 17:49 gs-rest-service-0.1.0.jar
+-rw-rw-r-- 1 bachmeb bachmeb 1.2K Nov 26 17:49 gs-rest-service-0.1.0.jar.original
+-rw-rw-r-- 1 bachmeb bachmeb 1.2K Nov 26 17:30 project.jar
+
+./build/scripts:
+total 20K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:42 .
+drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
+-rwxrwxr-x 1 bachmeb bachmeb 6.3K Nov 26 17:49 project
+-rw-rw-r-- 1 bachmeb bachmeb 3.8K Nov 26 17:49 project.bat
+
+./build/tmp:
+total 16K
+drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 17:30 .
+drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:49 compileJava
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 jar
+
+./build/tmp/compileJava:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:49 .
+drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 17:30 ..
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 emptySourcePathRef
+
+./build/tmp/compileJava/emptySourcePathRef:
+total 8.0K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:49 ..
+
+./build/tmp/jar:
+total 12K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 .
+drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 17:30 ..
+-rw-r--r-- 1 bachmeb bachmeb   25 Nov 26 17:30 MANIFEST.MF
+
+./gradle:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:34 .
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 ..
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:34 wrapper
+
+./gradle/wrapper:
+total 68K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:34 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:34 ..
+-rw-rw-r-- 1 bachmeb bachmeb  53K Nov 26 17:34 gradle-wrapper.jar
+-rw-rw-r-- 1 bachmeb bachmeb  231 Nov 26 17:34 gradle-wrapper.properties
+
+./.gradle:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 .
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 2.10
+
+./.gradle/2.10:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 ..
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 taskArtifacts
+
+./.gradle/2.10/taskArtifacts:
+total 104K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 ..
+-rw-rw-r-- 1 bachmeb bachmeb   30 Nov 26 17:29 cache.properties
+-rw-rw-r-- 1 bachmeb bachmeb   17 Nov 26 17:50 cache.properties.lock
+-rw-rw-r-- 1 bachmeb bachmeb  21K Nov 26 17:49 fileHashes.bin
+-rw-rw-r-- 1 bachmeb bachmeb  49K Nov 26 17:49 fileSnapshots.bin
+-rw-rw-r-- 1 bachmeb bachmeb  19K Nov 26 17:49 outputFileStates.bin
+-rw-rw-r-- 1 bachmeb bachmeb  24K Nov 26 17:49 taskArtifacts.bin
+
+./src:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 .
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 main
+
+./src/main:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 java
+
+./src/main/java:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 ..
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:29 hello
+
+./src/main/java/hello:
+total 16K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:29 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 ..
+-rw-rw-r-- 1 bachmeb bachmeb  101 Nov 26 17:29 Greeter.java
+-rw-rw-r-- 1 bachmeb bachmeb  172 Nov 26 17:26 HelloWorld.java
 */
 ```
 ##### Run the project
