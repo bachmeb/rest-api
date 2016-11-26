@@ -207,7 +207,18 @@ task wrapper(type: Wrapper) {
 ```
 ./gradlew build
 ```
-
+##### List the contents of the build/libs directory
+```
+ll build/libs/
+```
+```c
+/*
+total 13092
+-rw-rw-r-- 1 bachmeb bachmeb 13394696 Nov 26 17:49 gs-rest-service-0.1.0.jar
+-rw-rw-r-- 1 bachmeb bachmeb     1221 Nov 26 17:49 gs-rest-service-0.1.0.jar.original
+-rw-rw-r-- 1 bachmeb bachmeb     1221 Nov 26 17:30 project.jar
+*/
+```
 ##### Run the project
 ```
 ./gradlew run
