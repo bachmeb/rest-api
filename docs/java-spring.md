@@ -160,3 +160,55 @@ BUILD SUCCESSFUL
 
 Total time: 5.428 secs
 ```
+##### Edit the build file
+```
+nano build.gradle
+```
+```java
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+mainClassName = 'hello.HelloWorld'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.2.RELEASE")
+    }
+}
+
+jar {
+    baseName = 'gs-rest-service'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile("junit:junit")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10'
+}
+```
+##### Build the project
+```
+./gradlew build
+```
+
+##### Run the project
+```
+./gradlew run
+```
