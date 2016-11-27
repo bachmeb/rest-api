@@ -605,6 +605,10 @@ Total time: 12.447 secs
 
 This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html
 ```
+##### See if anything is running on port 8080
+```
+sudo lsof -P -n -iTCP
+```
 
 ##### Run the JAR file
 ```
@@ -612,12 +616,45 @@ java -jar build/libs/rest-api-spring-0.1.0.jar
 ```
 ```c
 /*
-Unable to start embedded Tomcat servlet container
 
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.3.2.RELEASE)
+
+2016-11-26 20:42:42.983  INFO 21111 --- [           main] hello.Application                        : Starting Application on api.proximal.us with PID 21111 (/home/bachmeb/git/rest-api-spring/project2/build/libs/rest-api-spring-0.1.0.jar started by bachmeb in /home/bachmeb/git/rest-api-spring/project2)
+2016-11-26 20:42:42.999  INFO 21111 --- [           main] hello.Application                        : No active profile set, falling back to default profiles: default
+2016-11-26 20:42:43.160  INFO 21111 --- [           main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@7cdd964e: startup date [Sat Nov 26 20:42:43 EST 2016]; root of context hierarchy
+2016-11-26 20:42:44.415  INFO 21111 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'beanNameViewResolver' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration; factoryMethodName=beanNameViewResolver; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/web/ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter; factoryMethodName=beanNameViewResolver; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.class]]
+2016-11-26 20:42:45.556  INFO 21111 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8080 (http)
+2016-11-26 20:42:45.588  INFO 21111 --- [           main] o.apache.catalina.core.StandardService   : Starting service Tomcat
+2016-11-26 20:42:45.589  INFO 21111 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.0.30
+2016-11-26 20:42:45.752  INFO 21111 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2016-11-26 20:42:45.752  INFO 21111 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2607 ms
+2016-11-26 20:42:46.303  INFO 21111 --- [ost-startStop-1] o.s.b.c.e.ServletRegistrationBean        : Mapping servlet: 'dispatcherServlet' to [/]
+2016-11-26 20:42:46.312  INFO 21111 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'characterEncodingFilter' to: [/*]
+2016-11-26 20:42:46.313  INFO 21111 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2016-11-26 20:42:46.313  INFO 21111 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2016-11-26 20:42:46.313  INFO 21111 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'requestContextFilter' to: [/*]
+2016-11-26 20:42:46.843  INFO 21111 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@7cdd964e: startup date [Sat Nov 26 20:42:43 EST 2016]; root of context hierarchy
+2016-11-26 20:42:46.945  INFO 21111 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/greeting]}" onto public hello.Greeting hello.GreetingController.greeting(java.lang.String)
+2016-11-26 20:42:46.950  INFO 21111 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-11-26 20:42:46.953  INFO 21111 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2016-11-26 20:42:47.016  INFO 21111 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-11-26 20:42:47.017  INFO 21111 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-11-26 20:42:47.096  INFO 21111 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-11-26 20:42:47.268  INFO 21111 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2016-11-26 20:42:47.373  INFO 21111 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2016-11-26 20:42:47.384  INFO 21111 --- [           main] hello.Application                        : Started Application in 5.382 seconds (JVM running for 6.102)
 */
 ```
+
 ##### Test the service
-* Go to http://[ec2 ip address]:8080/greeting
+* Go to http:// [ec2 ip address] :8080/greeting
 ```
 {"id":1,"content":"Hello, World!"}
 ```
