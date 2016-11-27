@@ -11,8 +11,8 @@
 
 ##### Create a project directory
 ```
-mkdir -p ~/git/rest-api-spring/project
-cd ~/git/rest-api-spring/project
+mkdir -p ~/git/rest-api-spring/project1
+cd ~/git/rest-api-spring/project1
 ```
 
 ##### Create the directory structure
@@ -98,7 +98,6 @@ apply plugin: 'java'
 gradle build
 ```
 ```
-
 :compileJava
 :processResources UP-TO-DATE
 :classes
@@ -113,7 +112,9 @@ gradle build
 
 BUILD SUCCESSFUL
 
-Total time: 5.608 secs
+Total time: 6.031 secs
+
+This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html
 ```
 
 ##### Initialize the wrapper scripts
@@ -144,6 +145,30 @@ mainClassName = 'hello.HelloWorld'
 ```
 ./gradlew build
 ```
+```c
+/*
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:jar UP-TO-DATE
+:startScripts
+:distTar
+:distZip
+:assemble
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+:test UP-TO-DATE
+:check UP-TO-DATE
+:build
+
+BUILD SUCCESSFUL
+
+Total time: 6.372 secs
+
+This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html
+*/
+```
 
 ##### Run the app
 ```
@@ -160,19 +185,93 @@ BUILD SUCCESSFUL
 
 Total time: 5.428 secs
 ```
-##### Edit the build file
+##### Make a new project directory
+```
+mkdir -p ~/git/rest-api-spring/project2
+cd ~/git/rest-api-spring/project2
+pwd
+```
+##### Make a source directory
+```
+mkdir -p  src/main/java/hello
+```
+
+##### Create a resource representation class
+```
+vim src/main/java/hello/Greeting.java
+```
+```java
+package hello;
+
+public class Greeting {
+
+    private final long id;
+    private final String content;
+
+    public Greeting(long id, String content) {
+        this.id = id;
+        this.content = content;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+}
+```
+
+##### Create a resource controller
+```
+nano src/main/java/hello/GreetingController.java
+```
+```java
+package hello;
+
+import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class GreetingController {
+
+    private static final String template = "Hello, %s!";
+    private final AtomicLong counter = new AtomicLong();
+
+    @RequestMapping("/greeting")
+    public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
+        return new Greeting(counter.incrementAndGet(),
+                            String.format(template, name));
+    }
+}
+```
+##### Make the application executable
+```
+nano src/main/java/hello/Application.java
+```
+```java
+package hello;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+##### Make a build file
 ```
 nano build.gradle
 ```
 ```java
-apply plugin: 'java'
-apply plugin: 'application'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
-
-mainClassName = 'hello.HelloWorld'
-
 buildscript {
     repositories {
         mavenCentral()
@@ -182,8 +281,13 @@ buildscript {
     }
 }
 
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
 jar {
-    baseName = 'gs-rest-service'
+    baseName = 'rest-api-spring'
     version =  '0.1.0'
 }
 
@@ -203,112 +307,282 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.10'
 }
 ```
+##### Get a list of Gradle tasks
+```
+gradle tasks
+```
+```c
+/*
+:tasks
+
+------------------------------------------------------------
+All tasks runnable from root project
+------------------------------------------------------------
+
+Application tasks
+-----------------
+bootRun - Run the project with support for auto-detecting main class and reloading static resources
+
+Build tasks
+-----------
+assemble - Assembles the outputs of this project.
+bootRepackage - Repackage existing JAR and WAR archives so that they can be executed from the command line using 'java -jar'
+build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+buildNeeded - Assembles and tests this project and all projects it depends on.
+classes - Assembles main classes.
+clean - Deletes the build directory.
+jar - Assembles a jar archive containing the main classes.
+testClasses - Assembles test classes.
+
+Build Setup tasks
+-----------------
+init - Initializes a new Gradle build. [incubating]
+
+Documentation tasks
+-------------------
+javadoc - Generates Javadoc API documentation for the main source code.
+
+Help tasks
+----------
+buildEnvironment - Displays all buildscript dependencies declared in root project 'project2'.
+components - Displays the components produced by root project 'project2'. [incubating]
+dependencies - Displays all dependencies declared in root project 'project2'.
+dependencyInsight - Displays the insight into a specific dependency in root project 'project2'.
+help - Displays a help message.
+model - Displays the configuration model of root project 'project2'. [incubating]
+projects - Displays the sub-projects of root project 'project2'.
+properties - Displays the properties of root project 'project2'.
+tasks - Displays the tasks runnable from root project 'project2'.
+
+IDE tasks
+---------
+cleanEclipse - Cleans all Eclipse files.
+cleanIdea - Cleans IDEA project files (IML, IPR)
+eclipse - Generates all Eclipse files.
+idea - Generates IDEA project files (IML, IPR, IWS)
+
+Verification tasks
+------------------
+check - Runs all checks.
+test - Runs the unit tests.
+
+Other tasks
+-----------
+cleanIdeaWorkspace
+dependencyManagement
+wrapper
+
+Rules
+-----
+Pattern: clean<TaskName>: Cleans the output files of a task.
+Pattern: build<ConfigurationName>: Assembles the artifacts of a configuration.
+Pattern: upload<ConfigurationName>: Assembles and uploads the artifacts belonging to a configuration.
+
+To see all tasks and more detail, run gradle tasks --all
+
+To see more detail about a task, run gradle help --task <task>
+
+BUILD SUCCESSFUL
+
+Total time: 7.299 secs
+
+This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html
+*/
+```
 ##### Build the project
 ```
-./gradlew build
+gradle build
 ``` 
 ```c
 /*
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-gradle-plugin/1.3.2.RELEASE/spring-boot-gradle-plugin-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-tools/1.3.2.RELEASE/spring-boot-tools-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-parent/1.3.2.RELEASE/spring-boot-parent-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/1.3.2.RELEASE/spring-boot-dependencies-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/spring-framework-bom/4.2.4.RELEASE/spring-framework-bom-4.2.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/data/spring-data-releasetrain/Gosling-SR2A/spring-data-releasetrain-Gosling-SR2A.pom
-Download https://repo1.maven.org/maven2/org/springframework/data/build/spring-data-build/1.7.3.RELEASE/spring-data-build-1.7.3.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/integration/spring-integration-bom/4.2.4.RELEASE/spring-integration-bom-4.2.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/security/spring-security-bom/4.0.3.RELEASE/spring-security-bom-4.0.3.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-loader-tools/1.3.2.RELEASE/spring-boot-loader-tools-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/io/spring/gradle/dependency-management-plugin/0.5.4.RELEASE/dependency-management-plugin-0.5.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/spring-core/4.2.4.RELEASE/spring-core-4.2.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.pom
-Download https://repo1.maven.org/maven2/org/apache/commons/commons-parent/34/commons-parent-34.pom
-Download https://repo1.maven.org/maven2/org/apache/apache/13/apache-13.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-gradle-plugin/1.3.2.RELEASE/spring-boot-gradle-plugin-1.3.2.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-loader-tools/1.3.2.RELEASE/spring-boot-loader-tools-1.3.2.RELEASE.jar
-Download https://repo1.maven.org/maven2/io/spring/gradle/dependency-management-plugin/0.5.4.RELEASE/dependency-management-plugin-0.5.4.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/spring-core/4.2.4.RELEASE/spring-core-4.2.4.RELEASE.jar
-Download https://repo1.maven.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.jar
 :compileJava
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-parent/1.3.2.RELEASE/spring-boot-starter-parent-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-web/1.3.2.RELEASE/spring-boot-starter-web-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starters/1.3.2.RELEASE/spring-boot-starters-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter/1.3.2.RELEASE/spring-boot-starter-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-tomcat/1.3.2.RELEASE/spring-boot-starter-tomcat-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-validation/1.3.2.RELEASE/spring-boot-starter-validation-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.6.5/jackson-databind-2.6.5.pom
-Download https://repo1.maven.org/maven2/com/fasterxml/jackson/jackson-parent/2.6.2/jackson-parent-2.6.2.pom
-Download https://repo1.maven.org/maven2/com/fasterxml/oss-parent/24/oss-parent-24.pom
-Download https://repo1.maven.org/maven2/org/springframework/spring-web/4.2.4.RELEASE/spring-web-4.2.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/spring-webmvc/4.2.4.RELEASE/spring-webmvc-4.2.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot/1.3.2.RELEASE/spring-boot-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-autoconfigure/1.3.2.RELEASE/spring-boot-autoconfigure-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-logging/1.3.2.RELEASE/spring-boot-starter-logging-1.3.2.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/yaml/snakeyaml/1.16/snakeyaml-1.16.pom
-Download https://repo1.maven.org/maven2/org/apache/tomcat/embed/tomcat-embed-core/8.0.30/tomcat-embed-core-8.0.30.pom
-Download https://repo1.maven.org/maven2/org/apache/tomcat/embed/tomcat-embed-el/8.0.30/tomcat-embed-el-8.0.30.pom
-Download https://repo1.maven.org/maven2/org/apache/tomcat/embed/tomcat-embed-logging-juli/8.0.30/tomcat-embed-logging-juli-8.0.30.pom
-Download https://repo1.maven.org/maven2/org/apache/tomcat/embed/tomcat-embed-websocket/8.0.30/tomcat-embed-websocket-8.0.30.pom
-Download https://repo1.maven.org/maven2/org/hibernate/hibernate-validator/5.2.2.Final/hibernate-validator-5.2.2.Final.pom
-Download https://repo1.maven.org/maven2/org/hibernate/hibernate-validator-parent/5.2.2.Final/hibernate-validator-parent-5.2.2.Final.pom
-Download https://repo1.maven.org/maven2/org/jboss/arquillian/arquillian-bom/1.1.9.Final/arquillian-bom-1.1.9.Final.pom
-Download https://repo1.maven.org/maven2/org/jboss/shrinkwrap/shrinkwrap-bom/1.2.2/shrinkwrap-bom-1.2.2.pom
-Download https://repo1.maven.org/maven2/org/jboss/shrinkwrap/resolver/shrinkwrap-resolver-bom/2.1.1/shrinkwrap-resolver-bom-2.1.1.pom
-Download https://repo1.maven.org/maven2/org/jboss/shrinkwrap/descriptors/shrinkwrap-descriptors-bom/2.0.0-alpha-7/shrinkwrap-descriptors-bom-2.0.0-alpha-7.pom
-Download https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.6.5/jackson-annotations-2.6.5.pom
-Download https://repo1.maven.org/maven2/com/fasterxml/jackson/jackson-parent/2.6.1/jackson-parent-2.6.1.pom
-Download https://repo1.maven.org/maven2/com/fasterxml/oss-parent/23/oss-parent-23.pom
-Download https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.6.5/jackson-core-2.6.5.pom
-Download https://repo1.maven.org/maven2/org/springframework/spring-aop/4.2.4.RELEASE/spring-aop-4.2.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/spring-beans/4.2.4.RELEASE/spring-beans-4.2.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/spring-context/4.2.4.RELEASE/spring-context-4.2.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/org/springframework/spring-expression/4.2.4.RELEASE/spring-expression-4.2.4.RELEASE.pom
-Download https://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.1.3/logback-classic-1.1.3.pom
-Download https://repo1.maven.org/maven2/ch/qos/logback/logback-parent/1.1.3/logback-parent-1.1.3.pom
-Download https://repo1.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.7.13/jcl-over-slf4j-1.7.13.pom
-Download https://repo1.maven.org/maven2/org/slf4j/slf4j-parent/1.7.13/slf4j-parent-1.7.13.pom
-Download https://repo1.maven.org/maven2/org/slf4j/jul-to-slf4j/1.7.13/jul-to-slf4j-1.7.13.pom
-Download https://repo1.maven.org/maven2/org/slf4j/log4j-over-slf4j/1.7.13/log4j-over-slf4j-1.7.13.pom
-Download https://repo1.maven.org/maven2/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.pom
-Download https://repo1.maven.org/maven2/org/jboss/logging/jboss-logging/3.3.0.Final/jboss-logging-3.3.0.Final.pom
-Download https://repo1.maven.org/maven2/org/jboss/jboss-parent/15/jboss-parent-15.pom
-Download https://repo1.maven.org/maven2/com/fasterxml/classmate/1.1.0/classmate-1.1.0.pom
-Download https://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom
-Download https://repo1.maven.org/maven2/aopalliance/aopalliance/1.0/aopalliance-1.0.pom
-Download https://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.1.3/logback-core-1.1.3.pom
-Download https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.pom
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-web/1.3.2.RELEASE/spring-boot-starter-web-1.3.2.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter/1.3.2.RELEASE/spring-boot-starter-1.3.2.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-tomcat/1.3.2.RELEASE/spring-boot-starter-tomcat-1.3.2.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-validation/1.3.2.RELEASE/spring-boot-starter-validation-1.3.2.RELEASE.jar
-Download https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.6.5/jackson-databind-2.6.5.jar
-Download https://repo1.maven.org/maven2/org/springframework/spring-web/4.2.4.RELEASE/spring-web-4.2.4.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/spring-webmvc/4.2.4.RELEASE/spring-webmvc-4.2.4.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot/1.3.2.RELEASE/spring-boot-1.3.2.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-autoconfigure/1.3.2.RELEASE/spring-boot-autoconfigure-1.3.2.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-logging/1.3.2.RELEASE/spring-boot-starter-logging-1.3.2.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/yaml/snakeyaml/1.16/snakeyaml-1.16.jar
-Download https://repo1.maven.org/maven2/org/apache/tomcat/embed/tomcat-embed-core/8.0.30/tomcat-embed-core-8.0.30.jar
-Download https://repo1.maven.org/maven2/org/apache/tomcat/embed/tomcat-embed-el/8.0.30/tomcat-embed-el-8.0.30.jar
-Download https://repo1.maven.org/maven2/org/apache/tomcat/embed/tomcat-embed-logging-juli/8.0.30/tomcat-embed-logging-juli-8.0.30.jar
-Download https://repo1.maven.org/maven2/org/apache/tomcat/embed/tomcat-embed-websocket/8.0.30/tomcat-embed-websocket-8.0.30.jar
-Download https://repo1.maven.org/maven2/org/hibernate/hibernate-validator/5.2.2.Final/hibernate-validator-5.2.2.Final.jar
-Download https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.6.5/jackson-annotations-2.6.5.jar
-Download https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.6.5/jackson-core-2.6.5.jar
-Download https://repo1.maven.org/maven2/org/springframework/spring-aop/4.2.4.RELEASE/spring-aop-4.2.4.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/spring-beans/4.2.4.RELEASE/spring-beans-4.2.4.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/spring-context/4.2.4.RELEASE/spring-context-4.2.4.RELEASE.jar
-Download https://repo1.maven.org/maven2/org/springframework/spring-expression/4.2.4.RELEASE/spring-expression-4.2.4.RELEASE.jar
-Download https://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.1.3/logback-classic-1.1.3.jar
-Download https://repo1.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.7.13/jcl-over-slf4j-1.7.13.jar
-Download https://repo1.maven.org/maven2/org/slf4j/jul-to-slf4j/1.7.13/jul-to-slf4j-1.7.13.jar
-Download https://repo1.maven.org/maven2/org/slf4j/log4j-over-slf4j/1.7.13/log4j-over-slf4j-1.7.13.jar
-Download https://repo1.maven.org/maven2/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar
-Download https://repo1.maven.org/maven2/org/jboss/logging/jboss-logging/3.3.0.Final/jboss-logging-3.3.0.Final.jar
-Download https://repo1.maven.org/maven2/com/fasterxml/classmate/1.1.0/classmate-1.1.0.jar
-Download https://repo1.maven.org/maven2/aopalliance/aopalliance/1.0/aopalliance-1.0.jar
-Download https://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.1.3/logback-core-1.1.3.jar
-Download https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.jar
+:processResources UP-TO-DATE
+:classes
+:findMainClass
+:jar
+:bootRepackage
+:assemble
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+:test UP-TO-DATE
+:check UP-TO-DATE
+:build
+
+BUILD SUCCESSFUL
+
+Total time: 10.425 secs
+
+This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html
+*/
+```
+
+##### List the contents of the project directory
+```
+ls -lahR
+```
+```c
+/*
+
+.:
+total 24K
+drwxrwxr-x 5 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 5 bachmeb bachmeb 4.0K Nov 26 19:21 ..
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 19:31 build
+-rw-rw-r-- 1 bachmeb bachmeb  598 Nov 26 19:29 build.gradle
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:22 .gradle
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:26 src
+
+./build:
+total 24K
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 5 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:31 classes
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 dependency-cache
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 libs
+drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 19:31 tmp
+
+./build/classes:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:31 main
+
+./build/classes/main:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 hello
+
+./build/classes/main/hello:
+total 20K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+-rw-rw-r-- 1 bachmeb bachmeb  670 Nov 26 19:31 Application.class
+-rw-rw-r-- 1 bachmeb bachmeb  576 Nov 26 19:31 Greeting.class
+-rw-rw-r-- 1 bachmeb bachmeb 1.2K Nov 26 19:31 GreetingController.class
+
+./build/dependency-cache:
+total 8.0K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+
+./build/libs:
+total 13M
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+-rw-rw-r-- 1 bachmeb bachmeb  13M Nov 26 19:31 rest-api-spring-0.1.0.jar
+-rw-rw-r-- 1 bachmeb bachmeb 2.1K Nov 26 19:31 rest-api-spring-0.1.0.jar.original
+
+./build/tmp:
+total 16K
+drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:31 compileJava
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 jar
+
+./build/tmp/compileJava:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 emptySourcePathRef
+
+./build/tmp/compileJava/emptySourcePathRef:
+total 8.0K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+
+./build/tmp/jar:
+total 12K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:31 .
+drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+-rw-r--r-- 1 bachmeb bachmeb   25 Nov 26 19:31 MANIFEST.MF
+
+./.gradle:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:22 .
+drwxrwxr-x 5 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:22 2.10
+
+./.gradle/2.10:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:22 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:22 ..
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:24 taskArtifacts
+
+./.gradle/2.10/taskArtifacts:
+total 76K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:24 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:22 ..
+-rw-rw-r-- 1 bachmeb bachmeb   30 Nov 26 19:22 cache.properties
+-rw-rw-r-- 1 bachmeb bachmeb   17 Nov 26 19:31 cache.properties.lock
+-rw-rw-r-- 1 bachmeb bachmeb  21K Nov 26 19:31 fileHashes.bin
+-rw-rw-r-- 1 bachmeb bachmeb  27K Nov 26 19:31 fileSnapshots.bin
+-rw-rw-r-- 1 bachmeb bachmeb  19K Nov 26 19:31 outputFileStates.bin
+-rw-rw-r-- 1 bachmeb bachmeb  20K Nov 26 19:31 taskArtifacts.bin
+
+./src:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:26 .
+drwxrwxr-x 5 bachmeb bachmeb 4.0K Nov 26 19:31 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:26 main
+
+./src/main:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:26 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:26 ..
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:26 java
+
+./src/main/java:
+total 12K
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:26 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:26 ..
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:28 hello
+
+./src/main/java/hello:
+total 20K
+drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 19:28 .
+drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 19:26 ..
+-rw-rw-r-- 1 bachmeb bachmeb  297 Nov 26 19:28 Application.java
+-rw-rw-r-- 1 bachmeb bachmeb  667 Nov 26 19:27 GreetingController.java
+-rw-rw-r-- 1 bachmeb bachmeb  328 Nov 26 19:27 Greeting.java
+*/
+```
+
+##### Initialize the wrapper scripts
+```
+gradle wrapper
+```
+```
+:wrapper
+
+BUILD SUCCESSFUL
+
+Total time: 7.236 secs
+
+This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html
+```
+##### List the contents of the project directory
+```
+ll
+```
+```c
+/*total 28
+drwxrwxr-x 6 bachmeb bachmeb 4096 Nov 26 19:31 build
+-rw-rw-r-- 1 bachmeb bachmeb  598 Nov 26 19:29 build.gradle
+drwxrwxr-x 3 bachmeb bachmeb 4096 Nov 26 20:33 gradle
+-rwxrwxr-x 1 bachmeb bachmeb 4971 Nov 26 20:33 gradlew
+-rw-rw-r-- 1 bachmeb bachmeb 2404 Nov 26 20:33 gradlew.bat
+drwxrwxr-x 3 bachmeb bachmeb 4096 Nov 26 19:26 src
+```
+
+##### Build the application
+```
+./gradlew build
+```
+```
+:compileJava
 :processResources UP-TO-DATE
 :classes
 :jar
@@ -327,189 +601,27 @@ Download https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7
 
 BUILD SUCCESSFUL
 
-Total time: 19.132 secs
+Total time: 12.447 secs
 
 This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html
-*/
 ```
 
-##### List the contents of the project directory
+##### Run the JAR file
 ```
-ls -lahR
+java -jar build/libs/rest-api-spring-0.1.0.jar
 ```
 ```c
 /*
-.:
-total 40K
-drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 ..
-drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 build
--rw-rw-r-- 1 bachmeb bachmeb  662 Nov 26 17:49 build.gradle
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:34 gradle
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 .gradle
--rwxrwxr-x 1 bachmeb bachmeb 4.9K Nov 26 17:34 gradlew
--rw-rw-r-- 1 bachmeb bachmeb 2.4K Nov 26 17:34 gradlew.bat
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 src
+Unable to start embedded Tomcat servlet container
 
-./build:
-total 32K
-drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 .
-drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 ..
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 classes
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 dependency-cache
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:42 distributions
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 libs
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:42 scripts
-drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 17:30 tmp
-
-./build/classes:
-total 12K
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 .
-drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 main
-
-./build/classes/main:
-total 12K
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 ..
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 hello
-
-./build/classes/main/hello:
-total 16K
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:30 ..
--rw-rw-r-- 1 bachmeb bachmeb  369 Nov 26 17:49 Greeter.class
--rw-rw-r-- 1 bachmeb bachmeb  648 Nov 26 17:49 HelloWorld.class
-
-./build/dependency-cache:
-total 8.0K
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 .
-drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
-
-./build/distributions:
-total 25M
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:42 .
-drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
--rw-rw-r-- 1 bachmeb bachmeb  13M Nov 26 17:49 project.tar
--rw-rw-r-- 1 bachmeb bachmeb  12M Nov 26 17:49 project.zip
-
-./build/libs:
-total 13M
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 .
-drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
--rw-rw-r-- 1 bachmeb bachmeb  13M Nov 26 17:49 gs-rest-service-0.1.0.jar
--rw-rw-r-- 1 bachmeb bachmeb 1.2K Nov 26 17:49 gs-rest-service-0.1.0.jar.original
--rw-rw-r-- 1 bachmeb bachmeb 1.2K Nov 26 17:30 project.jar
-
-./build/scripts:
-total 20K
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:42 .
-drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
--rwxrwxr-x 1 bachmeb bachmeb 6.3K Nov 26 17:49 project
--rw-rw-r-- 1 bachmeb bachmeb 3.8K Nov 26 17:49 project.bat
-
-./build/tmp:
-total 16K
-drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 17:30 .
-drwxrwxr-x 8 bachmeb bachmeb 4.0K Nov 26 17:42 ..
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:49 compileJava
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 jar
-
-./build/tmp/compileJava:
-total 12K
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:49 .
-drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 17:30 ..
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 emptySourcePathRef
-
-./build/tmp/compileJava/emptySourcePathRef:
-total 8.0K
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:49 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:49 ..
-
-./build/tmp/jar:
-total 12K
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 .
-drwxrwxr-x 4 bachmeb bachmeb 4.0K Nov 26 17:30 ..
--rw-r--r-- 1 bachmeb bachmeb   25 Nov 26 17:30 MANIFEST.MF
-
-./gradle:
-total 12K
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:34 .
-drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 ..
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:34 wrapper
-
-./gradle/wrapper:
-total 68K
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:34 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:34 ..
--rw-rw-r-- 1 bachmeb bachmeb  53K Nov 26 17:34 gradle-wrapper.jar
--rw-rw-r-- 1 bachmeb bachmeb  231 Nov 26 17:34 gradle-wrapper.properties
-
-./.gradle:
-total 12K
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 .
-drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 ..
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 2.10
-
-./.gradle/2.10:
-total 12K
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 ..
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 taskArtifacts
-
-./.gradle/2.10/taskArtifacts:
-total 104K
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:30 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:29 ..
--rw-rw-r-- 1 bachmeb bachmeb   30 Nov 26 17:29 cache.properties
--rw-rw-r-- 1 bachmeb bachmeb   17 Nov 26 17:50 cache.properties.lock
--rw-rw-r-- 1 bachmeb bachmeb  21K Nov 26 17:49 fileHashes.bin
--rw-rw-r-- 1 bachmeb bachmeb  49K Nov 26 17:49 fileSnapshots.bin
--rw-rw-r-- 1 bachmeb bachmeb  19K Nov 26 17:49 outputFileStates.bin
--rw-rw-r-- 1 bachmeb bachmeb  24K Nov 26 17:49 taskArtifacts.bin
-
-./src:
-total 12K
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 .
-drwxrwxr-x 6 bachmeb bachmeb 4.0K Nov 26 17:41 ..
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 main
-
-./src/main:
-total 12K
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 ..
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 java
-
-./src/main/java:
-total 12K
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 ..
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:29 hello
-
-./src/main/java/hello:
-total 16K
-drwxrwxr-x 2 bachmeb bachmeb 4.0K Nov 26 17:29 .
-drwxrwxr-x 3 bachmeb bachmeb 4.0K Nov 26 17:24 ..
--rw-rw-r-- 1 bachmeb bachmeb  101 Nov 26 17:29 Greeter.java
--rw-rw-r-- 1 bachmeb bachmeb  172 Nov 26 17:26 HelloWorld.java
 */
 ```
-##### Run the project
+##### Test the service
+* Go to http://[ec2 ip address]:8080/greeting
 ```
-./gradlew run
+{"id":1,"content":"Hello, World!"}
 ```
-```c
-/*
-:compileJava UP-TO-DATE
-:processResources UP-TO-DATE
-:classes UP-TO-DATE
-:run
-Hello World!
-
-BUILD SUCCESSFUL
-
-Total time: 9.927 secs
-
-This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html
-*/
+* Provide a name query string parameter with http://[ec2 ip address]:8080/greeting?name=Brian  
+```
+{"id":2,"content":"Hello, Brian!"}
 ```
