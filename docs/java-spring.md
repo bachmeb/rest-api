@@ -636,7 +636,7 @@ java -jar build/libs/rest-api-spring-0.1.0.jar
 2016-11-26 20:42:45.752  INFO 21111 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
 2016-11-26 20:42:45.752  INFO 21111 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2607 ms
 2016-11-26 20:42:46.303  INFO 21111 --- [ost-startStop-1] o.s.b.c.e.ServletRegistrationBean        : Mapping servlet: 'dispatcherServlet' to [/]
-2016-11-26 20:42:46.312  INFO 21111 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'characterEncodingFilter' to: [/*]
+2016-11-26 20:42:46.312  INFO 21111 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'characterEncodingFilter' to: [/]
 2016-11-26 20:42:46.313  INFO 21111 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
 2016-11-26 20:42:46.313  INFO 21111 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'httpPutFormContentFilter' to: [/*]
 2016-11-26 20:42:46.313  INFO 21111 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'requestContextFilter' to: [/*]
@@ -644,13 +644,15 @@ java -jar build/libs/rest-api-spring-0.1.0.jar
 2016-11-26 20:42:46.945  INFO 21111 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/greeting]}" onto public hello.Greeting hello.GreetingController.greeting(java.lang.String)
 2016-11-26 20:42:46.950  INFO 21111 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
 2016-11-26 20:42:46.953  INFO 21111 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
-2016-11-26 20:42:47.016  INFO 21111 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2016-11-26 20:42:47.017  INFO 21111 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2016-11-26 20:42:47.096  INFO 21111 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-11-26 20:42:47.016  INFO 21111 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-11-26 20:42:47.017  INFO 21111 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-11-26 20:42:47.096  INFO 21111 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [//favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
 2016-11-26 20:42:47.268  INFO 21111 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
 2016-11-26 20:42:47.373  INFO 21111 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
 2016-11-26 20:42:47.384  INFO 21111 --- [           main] hello.Application                        : Started Application in 5.382 seconds (JVM running for 6.102)
+
 */
+
 ```
 
 ##### Test the service
